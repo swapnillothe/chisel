@@ -1,0 +1,15 @@
+circuit DFF : @[:@2.0]
+  module DFF : @[:@3.2]
+    input clock : Clock @[:@4.4]
+    input reset : UInt<1> @[:@5.4]
+    output io_out : UInt<4> @[:@6.4]
+    input io_in : UInt<1> @[:@6.4]
+  
+    node _T_10 = dshr(io_out, UInt<1>("h1")) @[DFF.scala 9:29:@8.4]
+    node _T_12 = eq(io_in, UInt<1>("h0")) @[DFF.scala 9:49:@9.4]
+    node _T_15 = mux(_T_12, UInt<1>("h0"), UInt<4>("h8")) @[DFF.scala 9:42:@10.4]
+    node _T_16 = or(_T_10, _T_15) @[DFF.scala 9:37:@11.4]
+    reg _T_19 : UInt<4>, clock with :
+      reset => (UInt<1>("h0"), _T_19) @[DFF.scala 9:20:@12.4]
+    io_out <= _T_19 @[DFF.scala 9:10:@14.4]
+    _T_19 <= mux(reset, UInt<1>("h0"), _T_16) @[DFF.scala 9:20:@13.4]
